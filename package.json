@@ -28,6 +28,7 @@
     "fs": "0.0.1-security",
     "moment": "^2.24.0",
     "path": "^0.12.7",
+    "sentiment": "^5.0.2",
     "twitter-lite": "^0.10.1-0"
   },
   "devDependencies": {

@@ -1,42 +1,15 @@
 import { Phrase } from "./phrase";
+import { TextManager } from "./textmanager";
 
-export class PhraseManager {
-  private _phrases = new Array<Phrase>();
-
-  public get size() {
-    return this._phrases.length;
-  }
-
-  public contains = (str: string) => {
-    for (let i = 0; i < this._phrases.length; i++) {
-      const phrase = this._phrases[i];
-      if (phrase.text.toLowerCase() === str.toLowerCase()) return true;
-    }
-
-    return false;
-  };
-
+export class PhraseManager extends TextManager {
   public addOrIncrement = (str: string) => {
     if (!this.contains(str)) {
-      this._phrases.push(new Phrase(str));
-    } else {
-      let a = this.get(str);
-
-      if (a) a.increment();
-    }
-  };
-
-  public get = (str: string) => {
-    for (let i = 0; i < this._phrases.length; i++) {
-      const phrase = this._phrases[i];
-      if (phrase.text.toLowerCase() === str.toLowerCase()) return phrase;
-    }
-
-    return undefined;
+      this._items.push(new Phrase(str));
+    } else (this.get(str) as Phrase).increment();
   };
 
   public getSorted = () => {
-    const newArray = [...this._phrases];
+    const newArray = [...this._items] as Phrase[];
     newArray.sort((a, b) => {
       return b.count - a.count;
     });

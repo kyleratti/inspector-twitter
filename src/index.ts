@@ -3,8 +3,11 @@ import dotenv from "dotenv";
 import moment from "moment";
 import Twitter from "twitter-lite";
 import DataManager from "./data/datamanager";
-import { Phrase, PhraseManager } from "./phrases";
+import { Phrase, PhraseManager, Sentiment } from "./phrases";
 import { Tweet } from "./twitter";
+import { SentimentManager } from "./phrases";
+var SentimentLib = require("sentiment");
+// import { Sentiment } from "sentiment";
 
 dotenv.config();
 
@@ -117,8 +120,18 @@ const logMostPopular = (thing: Phrase[]) => {
   }
 };
 
+const logTopSentiment = (thing: Sentiment[]) => {
+  for (let i = 0; i < clamp(thing.length, 0, 5); i++) {
+    const phrase = thing[i];
+    console.log(`    #${i + 1}: ${phrase.text}`);
+  }
+};
+
 const analyze = () => {
   const tweets = dataManager.getAll();
+
+  const sentiment = new SentimentLib();
+  const sentimentManager = new SentimentManager();
 
   const [topics, nouns, verbs] = [
     new PhraseManager(),
@@ -155,12 +168,19 @@ const analyze = () => {
 
       verbs.addOrIncrement(text);
     });
+
+    sentimentManager.add(tweet.text, sentiment.analyze(tweet.text).score);
   });
 
   const [sortedTopics, sortedNouns, sortedVerbs] = [
     topics.getSorted(),
     nouns.getSorted(),
     verbs.getSorted(),
+  ];
+
+  const [sortedGoodSentiment, sortedBadSentiment] = [
+    sentimentManager.sortGood(),
+    sentimentManager.sortBad(),
   ];
 
   console.log("== Tweet Data ==");
@@ -187,6 +207,12 @@ const analyze = () => {
   console.info("== Verbs ==");
   console.log("  Total:", verbs.size);
   logMostPopular(sortedVerbs);
+
+  console.info("== Top Good Sentiment ==");
+  logTopSentiment(sortedGoodSentiment);
+
+  console.info("== Top Bad Sentiment ==");
+  logTopSentiment(sortedBadSentiment);
 };
 
 const run = async () => {

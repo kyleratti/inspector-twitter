@@ -1,14 +1,7 @@
-export class Phrase {
-  private _text: string;
+import { TextItem } from "./textitem";
+
+export class Phrase extends TextItem {
   private _count = 1;
-
-  constructor(str: string) {
-    this._text = str;
-  }
-
-  public get text(): string {
-    return this._text;
-  }
 
   public get count() {
     return this._count;
