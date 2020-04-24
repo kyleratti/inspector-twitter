@@ -76,15 +76,6 @@ const findOldest = (tweets: Tweet[]) => {
   return oldest;
 };
 
-const sortByValue = (hashMap: Map<string, number>) => {
-  const sorted = Array.from(hashMap.keys());
-  sorted.sort(
-    (a: any, b: any) => (hashMap.get(a) || 0) - (hashMap.get(b) || 0)
-  );
-
-  return sorted;
-};
-
 const getAllTweets = async (handle: string, attemptToPaginate?: boolean) => {
   let allTweets: Tweet[] = [];
 
