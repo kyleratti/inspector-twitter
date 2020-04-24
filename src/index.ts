@@ -116,8 +116,11 @@ const getAllTweets = async (handle: string, attemptToPaginate?: boolean) => {
   return allTweets;
 };
 
+const clamp = (num: number, min: number, max: number) =>
+  Math.min(Math.max(num, min), max);
+
 const logMostPopular = (thing: Phrase[]) => {
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < clamp(thing.length, 0, 5); i++) {
     const phrase = thing[i];
     console.log(`    #${i + 1}: ${phrase.text} (${phrase.count} times)`);
   }
