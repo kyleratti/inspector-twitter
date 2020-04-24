@@ -103,8 +103,9 @@ const getAllTweets = async (handle: string, attemptToPaginate?: boolean) => {
       });
 
       capturedAll =
-        tweets.length === 1 &&
-        tweets[0].id_str === allTweets[allTweets.length - 1].id_str;
+        tweets.length < 1 ||
+        (tweets.length === 1 &&
+          tweets[0].id_str === allTweets[allTweets.length - 1].id_str);
     }
   }
 
