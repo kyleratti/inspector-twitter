@@ -126,12 +126,6 @@ const analyze = () => {
     new PhraseManager(),
   ];
 
-  // const [topics, nouns, verbs] = [
-  //   new Map<string, number>(),
-  //   new Map<string, number>(),
-  //   new Map<string, number>(),
-  // ];
-
   tweets.forEach((tweet) => {
     const parser = compromise(tweet.text);
 
@@ -146,8 +140,6 @@ const analyze = () => {
       if (text.length <= 2) return;
 
       topics.addOrIncrement(text);
-
-      // topics.set(text, (topics.get(text) || 0) + 1);
     });
 
     tweetNouns.forEach((noun) => {
@@ -155,8 +147,6 @@ const analyze = () => {
       if (text.length <= 2) return;
 
       nouns.addOrIncrement(text);
-
-      // nouns.set(text, (nouns.get(text) || 0) + 1);
     });
 
     tweetVerbs.forEach((verb) => {
@@ -164,24 +154,14 @@ const analyze = () => {
       if (text.length <= 2) return;
 
       verbs.addOrIncrement(text);
-
-      // verbs.set(text, (verbs.get(text) || 0) + 1);
     });
   });
-
-  // const [sortedTopics, sortedNouns, sortedVerbs] = [
-  //   sortByValue(topics),
-  //   sortByValue(nouns),
-  //   sortByValue(verbs),
-  // ];
 
   const [sortedTopics, sortedNouns, sortedVerbs] = [
     topics.getSorted(),
     nouns.getSorted(),
     verbs.getSorted(),
   ];
-
-  // console.log(sortedTopics, sortedNouns, sortedVerbs);
 
   console.log("== Tweet Data ==");
   console.log("  Username:", `@${targetHandle}`);
@@ -221,7 +201,6 @@ const run = async () => {
     } else dataManager.load();
 
     analyze();
-    // dataManager.save();
     console.log("Goodbye");
   } catch (err) {
     console.error(err);
